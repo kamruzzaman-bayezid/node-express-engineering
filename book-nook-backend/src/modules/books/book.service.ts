@@ -1,6 +1,7 @@
 import { pool } from "../../config/db";
-import { ERROR_CODES, type IBook } from "../../types";
+import { ERROR_CODES } from "../../types";
 import { AppError } from "../../utils/AppError";
+import type { IBook } from "./book.interface";
 
 // insert book into DB
 const insertBookIntoDb = async (
@@ -18,11 +19,10 @@ const insertBookIntoDb = async (
   }
 
   const res = await pool.query(
-    `
-            INSERT INTO books (title, author, genre, published_year, price, stock_quantity) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *
-            `,
+    `INSERT INTO books (title, author, genre, published_year, price, stock_quantity) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
     [title, author, genre, published_year, price, stock_quantity],
   );
+
   return res.rows[0];
 };
 
